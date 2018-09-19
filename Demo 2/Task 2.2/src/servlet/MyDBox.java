@@ -20,6 +20,8 @@ import ClientDB.clientDB;
 @WebServlet("/MyDBox")
 public class MyDBox extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String token = "";
+	private static String id ="";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,20 +40,23 @@ public class MyDBox extends HttpServlet {
 		//doPost(request, response);
 		clientDB client = new clientDB();
 		String result;
-		String p_result;
+		String account;
 		String code = request.getParameter("code").toString();
 		try {
 			result = client.accessToken(code);
-			p_result = clientDB.parse(result);
+			token = clientDB.parseToken(result);
+			id = clientDB.parseAccountID(result);
+			account = clientDB.getAccountInfo(token, id);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result="virhe";
-			p_result = "virhe";
+			token = "virhe";
+			account = "virhe";
 		}
 		
 		PrintWriter out = response.getWriter();
-		out.write(p_result); 				
+		out.write(account); 				
 		out.flush();
 	    out.close();
 		
@@ -66,8 +71,33 @@ public class MyDBox extends HttpServlet {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
 		//NumberConvertor client = new NumberConvertor();
+		String type = request.getParameter("type").toString();
 		clientDB client = new clientDB();
-		String result;
+		String result="";
+		if(type.equals("file")) {
+			String path = request.getParameter("path").toString();
+			try {
+				result = client.uploadFile(token, path);
+				//result = "terve";
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = "virhe";
+			}
+		}
+		else if(type.equals("storage")){
+			try {
+				result = client.getSpaceUsage(token, id);
+				//result = "terve";
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result = "virhe";
+			}
+		}
+		else {
+		
+		
 		
 		//String value = request.getParameter("code").toString();
 				
@@ -78,7 +108,7 @@ public class MyDBox extends HttpServlet {
 			e.printStackTrace();
 			result = "virhe";
 		}
-		
+		}
 		
 		
 		//String value = request.getParameter("value").toString();
@@ -88,7 +118,7 @@ public class MyDBox extends HttpServlet {
 		out.write(result); 				
 		out.flush();
 	    out.close();
-
+	    
 	}
 
 }

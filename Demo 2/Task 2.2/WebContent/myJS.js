@@ -25,13 +25,13 @@ function sendRequest_back(result)
    }
 }
 
-function accessToken()
+function getAccount()
 {
     var q_str = 'code='+Code;
-	doAjax('MyDBox',q_str,'accessToken_back','get',0);
+	doAjax('MyDBox',q_str,'getAccount_back','get',0);
 }
 
-function accessToken_back(result)
+function getAccount_back(result)
 {
 	if (result.substring(0,5)=='error'){
 	   //window.document.getElementById('div3').style.display = 'block';
@@ -43,19 +43,35 @@ function accessToken_back(result)
 }
 
 
-
-function convertPrice()
+function uploadFile()
 {
-    window.document.getElementById('div3').style.display = 'none';
-	var q_str = 'type=price&value='+document.getElementById('t3').value;
-	doAjax('MyConvertor_Servlet',q_str,'convertPrice_back','post',0);
+	var q_str = 'type=file&path='+document.getElementById('f1').value;
+	doAjax('MyDBox',q_str,'uploadFile_back','post',0);
 }
-function convertPrice_back(result)
+
+function uploadFile_back(result)
 {
 	if (result.substring(0,5)=='error'){
-	   window.document.getElementById('div3').style.display = 'block';
-	   window.document.getElementById('div3').innerHTML="<p style='color:red;'><b>"+result.substring(6)+"</b></p>";
+	   //window.document.getElementById('div3').style.display = 'block';
+	   //window.document.getElementById('div3').innerHTML="<p style='color:red;'><b>"+result.substring(6)+"</b></p>";
    }else{
-	   window.document.getElementById('t4').value=""+result;
+	   window.document.getElementById('t1').value=""+result;
    }
 }
+
+function getUserStorage()
+{
+	var q_str = 'type=storage';
+	doAjax('MyDBox',q_str,'getUserStorage_back','post',0);
+}
+
+function getUserStorage_back(result)
+{
+	if (result.substring(0,5)=='error'){
+	   //window.document.getElementById('div3').style.display = 'block';
+	   //window.document.getElementById('div3').innerHTML="<p style='color:red;'><b>"+result.substring(6)+"</b></p>";
+   }else{
+	   window.document.getElementById('t3').value=""+result;
+   }
+}
+
