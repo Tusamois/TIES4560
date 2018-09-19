@@ -195,20 +195,15 @@ public class clientDB {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public static String getSpaceUsage(String tokenStr, String accountIDStr) throws URISyntaxException, IOException {
+	public static String getSpaceUsage(String tokenStr) throws URISyntaxException, IOException {
 		String access_token = "" + tokenStr;
-		String content = "{\"account_id\": \"" + accountIDStr + "\"}";
+		String a ="aaa";
 		URL url = new URL("https://api.dropboxapi.com/2/users/get_space_usage");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		try {
 			connection.setDoOutput(true);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Authorization", "Bearer " + access_token);
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("Content-Length", "" + content.length());
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-			outputStreamWriter.write(content);
-			outputStreamWriter.flush();
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -216,10 +211,10 @@ public class clientDB {
 				response.append(inputLine);
 			}
 			in.close();
-			queryResult = response.toString();
+			a = response.toString();
 		} finally {
 			connection.disconnect();
-			return queryResult;
+			return a;
 		}
 	}
 

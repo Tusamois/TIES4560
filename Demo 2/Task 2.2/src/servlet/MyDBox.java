@@ -87,7 +87,7 @@ public class MyDBox extends HttpServlet {
 		}
 		else if(type.equals("storage")){
 			try {
-				result = client.getSpaceUsage(token, id);
+				result = client.getSpaceUsage(token);
 				//result = "terve";
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
