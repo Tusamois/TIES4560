@@ -95,9 +95,7 @@ public class MyDBox extends HttpServlet {
 				result = "virhe";
 			}
 		}
-		else {
-		
-		
+		else {		
 		
 		//String value = request.getParameter("code").toString();
 				
