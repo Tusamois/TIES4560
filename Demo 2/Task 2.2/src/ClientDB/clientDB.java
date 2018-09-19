@@ -146,8 +146,25 @@ public class clientDB {
 			queryResult = response.toString();
 		} finally {
 			connection.disconnect();
-			return queryResult;
+			return parseAccountInfo(queryResult);
+			//return queryResult;
 		}
+		
+		
+	}
+
+	/**
+	 * 
+	 * @param queryResult2
+	 * @return
+	 */
+	private static String parseAccountInfo(String result) {
+		JSONObject obj = new JSONObject(result);
+		String accountId = obj.getString("account_id");
+		String displayName = obj.getJSONObject("name").getString("display_name");
+		String email = obj.getString("email");
+		return "ID: " + accountId + ", name: " + displayName + ", email: " + email;
+		
 	}
 
 	/**
