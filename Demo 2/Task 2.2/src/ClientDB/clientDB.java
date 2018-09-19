@@ -77,9 +77,9 @@ public class clientDB {
 			connection.disconnect();
 			return queryResult;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param result
@@ -91,5 +91,62 @@ public class clientDB {
 		String c = a.substring(0, b);
 		return c;
 	}
+
+	/**
+	 * 
+	 * @param tokenStr
+	 * @param accountIDStr
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	public void getAccountInfo(String tokenStr, String accountIDStr) throws URISyntaxException, IOException {
+		String access_token = ""+tokenStr;
+		String content = "{\"account_id\": \"" + accountIDStr + "\"}";
+		URL url = new URL("https://api.dropboxapi.com/2/users/get_account");
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		try {
+		connection.setDoOutput(true);
+		connection.setRequestMethod("POST");
+		connection.setRequestProperty("Authorization", "Bearer "+access_token);
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty("Content-Length", "" + content.length());
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
+		outputStreamWriter.write(content);
+		outputStreamWriter.flush();
+		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+		response.append(inputLine);
+		}
+		in.close();
+		queryResult = response.toString();
+		} finally {
+		connection.disconnect();
+		}
+		}
+
+	/*
+	 * public void uploadFile(String token, String path) throws URISyntaxException,
+	 * IOException { String access_token = ""+token; String sourcePath = ""+path;
+	 * //required file path on local file system Path pathFile =
+	 * Paths.get(sourcePath); byte[] data = Files.readAllBytes(pathFile); String
+	 * content =
+	 * "{\"path\": \"/MyDBoxClient_App01_files/images/image_initial_uploaded.png\",\"mode\"
+	 * : \"add\",\"autorename\": true,\"mute\": false,\"strict_conflict\": false}";
+	 * URL url = new URL("https://content.dropboxapi.com/2/files/upload");
+	 * HttpURLConnection connection = (HttpURLConnection) url.openConnection(); try
+	 * { connection.setDoOutput(true); connection.setRequestMethod("POST");
+	 * connection.setRequestProperty("Authorization", "Bearer "+access_token);
+	 * connection.setRequestProperty("Content-Type", "application/octet-stream");
+	 * connection.setRequestProperty("Dropbox-API-Arg", "" + content);
+	 * connection.setRequestProperty("Content-Length", String.valueOf(data.length));
+	 * OutputStream outputStream = connection.getOutputStream();
+	 * outputStream.write(data); outputStream.flush(); BufferedReader in = new
+	 * BufferedReader(new InputStreamReader(connection.getInputStream())); String
+	 * inputLine; StringBuffer response = new StringBuffer(); while ((inputLine =
+	 * in.readLine()) != null) { response.append(inputLine); } in.close();
+	 * queryResult = response.toString(); } finally { connection.disconnect(); } }
+	 */
 
 }
