@@ -158,11 +158,13 @@ public class clientDB {
 	 * @throws IOException
 	 */
 	public String uploadFile(String token, String path) throws URISyntaxException, IOException {
+		int i = path.lastIndexOf("\\");
+		String fileName = path.substring(i+1);
 		String access_token = ""+token;
 		String sourcePath = ""+path; //required file path on local file system
 		Path pathFile = Paths.get(sourcePath);
 		byte[] data = Files.readAllBytes(pathFile);
-		String content = "{\"path\": \"/Demo2Task22/readme.txt\",\"mode\":\"add\",\"autorename\": true,\"mute\": false,\"strict_conflict\": false}";
+		String content = "{\"path\": \"/Demo2Task22/"+fileName+"\",\"mode\":\"add\",\"autorename\": true,\"mute\": false,\"strict_conflict\": false}";
 		URL url = new URL("https://content.dropboxapi.com/2/files/upload");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		try {
