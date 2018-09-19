@@ -216,8 +216,31 @@ public class clientDB {
 			a = response.toString();
 		} finally {
 			connection.disconnect();
-			return a;
+			return parseSpaceUsage(a);
+			//return a;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param a
+	 */
+	private static String parseSpaceUsage(String a){
+		//JSONObject obj = new JSONObject(a);
+		//String b = obj.getString("allocation");
+		//String c = obj.getString("allocated");
+		String delims = "[ ]+";
+		String[] tokens = a.split(delims);
+		String result = "";
+		for(int i = 0; i < tokens.length; i++) {
+			if(Character.isDigit(tokens[i].charAt(0))) {result = result + tokens[i] + " " ;}
+		}
+		result = result.replace(",", "");
+		result = result.replace(".", "");
+		result = result.replace("}", "");
+		String[] b = result.split(delims);
+		return "Used data: " + b[0] + ", Allocated data: " + b[1];
+	}
+	
 
 }
