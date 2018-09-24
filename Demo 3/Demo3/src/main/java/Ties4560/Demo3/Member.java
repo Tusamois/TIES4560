@@ -16,7 +16,7 @@ public class Member {
 	public Member(String name, int id) {
 		this.name = name;
 		this.id = id;
-		this.setBirthyear(0);
+		this.setBirthyear(1);
 	}
 	
 	public Member() {
