@@ -7,13 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 public class MemberService {
-	private static List<Member> list; 
+	private static List<Member> list = new ArrayList<Member>(); 
 	
-	public MemberService() {
-		list = new ArrayList<Member>();
-		Member member = new Member("Jack");
-		list.add(member);
-	};
+	public MemberService() {};
 	
 	
 	/**
@@ -39,6 +35,16 @@ public class MemberService {
 		}
 		return m; 
 		
+	}
+
+	/**
+	 * Adding member to list
+	 * @param member
+	 * @return
+	 */
+	public Member addMember(Member member) {
+		list.add(member);
+		return member;
 	}
 	
 	

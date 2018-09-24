@@ -12,9 +12,7 @@ public class Member {
 	
 	public Member() {
 	}
-	
-	
-	
+		
 	public String getName() {
 		return name;
 	}
