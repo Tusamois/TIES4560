@@ -59,6 +59,7 @@ public class MemberService {
 		oldMember.setName(member.getName());
 		return oldMember;
 		// TODO Exception handling (if index is out of bounds)
+		//TODO Birth year update
 		
 	}
 
