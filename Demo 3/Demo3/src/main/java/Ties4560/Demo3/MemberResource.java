@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
  * Root resource (exposed at "myresource" path)
  */
 
-@Path("/memberresource")
+@Path("/members")
 public class MemberResource {
 	MemberService memberService = new MemberService();
 
@@ -32,23 +32,23 @@ public class MemberResource {
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Member getMember(@PathParam("memberId") int id) {
-		Member member = MemberService.getMember(id);
+	public Member getMember(@PathParam("memberId") int memberId) {
+		Member member = MemberService.getMember(memberId);
 		return member;
 	}
 
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Member updateMember(@PathParam("memberId") int id, Member member) {
+	public Member updateMember(@PathParam("memberId") int memberId, Member member) {
 		// member.getId(id);
-		return memberService.updateMember(member, id);
+		return memberService.updateMember(member, memberId);
 	}
 
 	@DELETE
 	@Path("/{memberId}")
-	public void deleteMember(@PathParam("memberId") int id) {
-		memberService.removeMember(id);
+	public void deleteMember(@PathParam("memberId") int memberId) {
+		memberService.removeMember(memberId);
 	}
 
 	@GET
@@ -62,4 +62,9 @@ public class MemberResource {
 		}
 		return memberService.getAllMembers();
 	}
+	
+    @Path("{memberId}/comments")
+    public CommentResource getCommentResourceForRead(@PathParam("memberId") int memberId) {
+        return new CommentResource(memberId);
+    }
 }
