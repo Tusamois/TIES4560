@@ -1,5 +1,6 @@
 package Ties4560.Demo3;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -25,8 +30,16 @@ public class MemberResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Member addMember(Member member) {
-		return memberService.addMember(member);
+	public Response addMember(Member member, @Context UriInfo uriInfo) {
+		Member newMemberService = memberService.addMember(member);
+		//return Response.status(Status.CREATED)
+		//.header("User:", "admin")
+		//.entity(newMemberService)
+		//.build(); 
+		
+		String newId = String.valueOf(newMemberService.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uri).entity(newMemberService).build(); 
 	}
 
 	@GET
@@ -63,8 +76,10 @@ public class MemberResource {
 		return memberService.getAllMembers();
 	}
 	
-    @Path("{memberId}/comments")
-    public CommentResource getCommentResourceForRead(@PathParam("memberId") int memberId) {
-        return new CommentResource(memberId);
-    }
+	@Path("/{memberId}/comments")
+	public CommentResource getCommentResource(@PathParam("memberId") int memberId){
+		return new CommentResource(memberId); 
+		
+		
+	}
 }

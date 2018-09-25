@@ -15,10 +15,31 @@ public class CommentService {
 	public List<Comment> getAllComments() {
 		return list;
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+	public Comment getComment(int memberId, int commentId) {
+		Comment c = null;
+		for (Comment comment : list) {
+			if(comment.getCommentId() == commentId) {c=comment; break;}
+		}
+		return c; 
+	}
+
+	public List<Comment> getAllComments(int memberId) {
+		Comment c = null;
+		List<Comment> queryList = new ArrayList<Comment>();
+		
+		for (Comment comment : list) {
+			if(comment.getMemberId() == memberId) {queryList.add(comment);}
+		}
+		return queryList; 
+	}
+
+	public Comment sendComment(int id, Comment comment) {
+		lastId = lastId + 1;
+		comment.setCommentId(lastId);
+		comment.setMemberId(id);
+		list.add(comment);
+		return comment;
 	}
 
 }

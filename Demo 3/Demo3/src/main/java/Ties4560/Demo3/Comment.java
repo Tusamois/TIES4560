@@ -4,10 +4,12 @@ public class Comment {
 	
 	private String content;
 	private int comment_id;
+	private int member_id;
 
-	public Comment(String content, int id) {
+	public Comment(String content, int comment_id, int member_id) {
 		this.content = content;
-		this.comment_id = id;
+		this.comment_id = comment_id;
+		this.member_id = member_id;
 	}
 	
 	public Comment() {
@@ -25,18 +27,20 @@ public class Comment {
 		return content;
 	}
 	
-	public int getId() {
+	public void setCommentId(int id) {
+		this.comment_id = id;
+	}
+	
+	public void setMemberId(int id) {
+		this.member_id = id;
+	}
+
+	public int getCommentId() {
 		return comment_id;
 	}
 	
-	public void setId(int id) {
-		this.comment_id = id;
+	public int getMemberId() {
+		return member_id;
 	}
-
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
