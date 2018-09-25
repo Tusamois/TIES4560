@@ -10,6 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -20,14 +22,22 @@ public class CommentResource {
 	int memberId;
 	
 	@GET
-	public List<Comment> getComments(@PathParam("memberId") int memberId){
-			return commentService.getAllComments(memberId);
+	public Response getComments(@PathParam("memberId") int memberId){
+			List<Comment> newComment = commentService.getAllComments(memberId);
+			return Response.status(Status.OK)
+					.header("User:", "admin")
+					.entity(newComment)
+					.build(); 
 	}
 	
 	@GET
 	@Path("/{commentId}")
-	public Comment getComment(@PathParam("memberId") int memberId, @PathParam("commentId") int commentId){
-	return commentService.getComment(memberId, commentId); 
+	public Response getComment(@PathParam("memberId") int memberId, @PathParam("commentId") int commentId){
+	Comment newComment = commentService.getComment(memberId, commentId);
+	return Response.status(Status.OK)
+	.header("User:", "admin")
+	.entity(newComment)
+	.build(); 
 	}   
 	
     public CommentResource(int memberId) {
@@ -36,13 +46,12 @@ public class CommentResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Comment sendComment(@PathParam("memberId") int memberId, Comment comment) {
-		return commentService.sendComment(memberId, comment);
+    public Response sendComment(@PathParam("memberId") int memberId, Comment comment) {
+		Comment newComment = commentService.sendComment(memberId, comment);
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.entity(newComment)
+		.build(); 
     }
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

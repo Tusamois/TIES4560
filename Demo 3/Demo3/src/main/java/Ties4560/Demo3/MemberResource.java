@@ -30,50 +30,65 @@ public class MemberResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addMember(Member member, @Context UriInfo uriInfo) {
+	public Response addMember(Member member) {
 		Member newMemberService = memberService.addMember(member);
-		//return Response.status(Status.CREATED)
-		//.header("User:", "admin")
-		//.entity(newMemberService)
-		//.build(); 
-		
-		String newId = String.valueOf(newMemberService.getId());
-		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
-		return Response.created(uri).entity(newMemberService).build(); 
+		return Response.status(Status.CREATED)
+		.header("User:", "admin")
+		.entity(newMemberService)
+		.build(); 
 	}
 
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Member getMember(@PathParam("memberId") int memberId) {
-		Member member = MemberService.getMember(memberId);
-		return member;
+	public Response getMember(@PathParam("memberId") int memberId) {
+		Member newMemberService = MemberService.getMember(memberId);
+		return Response.status(Status.FOUND)
+		.header("User:", "admin")
+		.entity(newMemberService)
+		.build();
 	}
 
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Member updateMember(@PathParam("memberId") int memberId, Member member) {
+	public Response updateMember(@PathParam("memberId") int memberId, Member member) {
 		// member.getId(id);
-		return memberService.updateMember(member, memberId);
+		Member newMemberService = memberService.updateMember(member, memberId);
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.entity(newMemberService)
+		.build(); 
 	}
 
 	@DELETE
 	@Path("/{memberId}")
-	public void deleteMember(@PathParam("memberId") int memberId) {
+	public Response deleteMember(@PathParam("memberId") int memberId) {
 		memberService.removeMember(memberId);
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.build(); 
 	}
 
 	@GET
-	public List<Member> getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
+	public Response getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
 			@QueryParam("end") int end) {
+		List<Member> newMemberService;
+		
 		if (birthyear > 0) {
-			return memberService.getAllMembersForYear(birthyear);
+			newMemberService = memberService.getAllMembersForYear(birthyear);
 		}
 		if (start >= 0 && end > 0) {
-			return memberService.getAllMembersPaginated(start, end);
+			newMemberService = memberService.getAllMembersPaginated(start, end);
 		}
-		return memberService.getAllMembers();
+		else {
+			newMemberService =  memberService.getAllMembers();
+		}
+		
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.entity(newMemberService)
+		.build(); 
 	}
 	
 	@Path("/{memberId}/comments")
