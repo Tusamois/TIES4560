@@ -1,12 +1,20 @@
 package Ties4560.Demo3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Member {
 	private String name;
 	private int member_id;
 	private int birthyear;
+	private List<Link> links = new ArrayList<>();
 	
+	public List<Link> getLinks() {
+		return links;
+	}
+
 	public Member(String name, int id, int birthyear) {
 		this.name = name;
 		this.member_id = id;
@@ -48,5 +56,12 @@ public class Member {
 
 	public void setBirthyear(int birthyear) {
 		this.birthyear = birthyear;
+	}
+	
+	public void addLink(String url, String rel) {
+		Link newLink = new Link();
+		newLink.setLink(url);
+		newLink.setRel(rel);
+		links.add(newLink);
 	}
 }

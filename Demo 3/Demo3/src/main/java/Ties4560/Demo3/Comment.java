@@ -1,10 +1,18 @@
 package Ties4560.Demo3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Comment {
 	
 	private String content;
 	private int comment_id;
 	private int member_id;
+	private List<Link> links = new ArrayList<>();
+
+	public List<Link> getLinks() {
+		return links;
+	}
 
 	public Comment(String content, int comment_id, int member_id) {
 		this.content = content;
@@ -42,5 +50,11 @@ public class Comment {
 	public int getMemberId() {
 		return member_id;
 	}
-	
+
+	public void addLink(String url, String rel) {
+		Link newLink = new Link();
+		newLink.setLink(url);
+		newLink.setRel(rel);
+		links.add(newLink);
+	}
 }

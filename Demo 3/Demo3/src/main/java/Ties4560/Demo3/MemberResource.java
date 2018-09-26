@@ -28,11 +28,30 @@ public class MemberResource {
 	MemberService memberService = new MemberService();
 
 	
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addMember(Member member) {
+//		Member newMemberService = memberService.addMember(member);
+//		return Response.status(Status.CREATED)
+//		.header("User:", "admin")
+//		.entity(newMemberService)
+//		.build(); 
+//	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addMember(Member member) {
+	public Response addMember(Member member, @Context UriInfo uriInfo) {
 		Member newMemberService = memberService.addMember(member);
-		return Response.status(Status.CREATED)
+		
+		String uri = uriInfo.getBaseUriBuilder().path(MemberResource.class).path(Long.toString(member.getId())).build().toString();
+		newMemberService.addLink(uri, "self");
+		
+		uri = uriInfo.getBaseUriBuilder().path(MemberResource.class).path(MemberResource.class, "getCommentResource").resolveTemplate("memberId", member.getId()).build().toString();
+		newMemberService.addLink(uri, "comments");
+		
+		String newId = String.valueOf(newMemberService.getId());
+		URI uriA = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uriA)
 		.header("User:", "admin")
 		.entity(newMemberService)
 		.build(); 

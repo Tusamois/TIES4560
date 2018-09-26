@@ -1,5 +1,6 @@
 package Ties4560.Demo3;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -9,8 +10,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 @Path("/")
@@ -38,20 +41,40 @@ public class CommentResource {
 	.header("User:", "admin")
 	.entity(newComment)
 	.build(); 
-	}   
+	}  
 	
     public CommentResource(int memberId) {
 		// TODO Auto-generated constructor stub
 	}
 
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//    public Response sendComment(@PathParam("memberId") int memberId, Comment comment) {
+//		Comment newComment = commentService.sendComment(memberId, comment);
+//		return Response.status(Status.OK)
+//		.header("User:", "admin")
+//		.entity(newComment)
+//		.build(); 
+//    }
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Response sendComment(@PathParam("memberId") int memberId, Comment comment) {
+	public Response sendComment(@PathParam("memberId") int memberId, Comment comment, @Context UriInfo uriInfo) {
 		Comment newComment = commentService.sendComment(memberId, comment);
-		return Response.status(Status.OK)
+
+		String uri = uriInfo.getBaseUriBuilder().path(MemberResource.class).path(MemberResource.class, "getCommentResource").resolveTemplate("memberId", newComment.getMemberId()).path(Long.toString(newComment.getCommentId())).build().toString();
+		newComment.addLink(uri, "self");
+		
+		uri = uriInfo.getBaseUriBuilder().path(MemberResource.class).path(Long.toString(newComment.getMemberId())).build().toString();
+		newComment.addLink(uri, "member");
+		
+		String newId = String.valueOf(newComment.getCommentId());
+		URI uriA = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uriA)
 		.header("User:", "admin")
 		.entity(newComment)
 		.build(); 
-    }
+	}
+
 
 }
