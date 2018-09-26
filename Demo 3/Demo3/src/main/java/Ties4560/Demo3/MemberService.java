@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import Ties4560.Demo3.exceptionHandling.DataNotFoundException;
+import Ties4560.Demo3.exceptionHandling.InvalidIdException;
+
 
 public class MemberService {
 	private static List<Member> list = new ArrayList<Member>(); 
@@ -31,6 +34,9 @@ public class MemberService {
 		for (Member member : list) {
 			if(member.getId() == id) {m=member; break;}
 		}
+		if(m == null) {
+			throw new DataNotFoundException("Member with id "+ id +" not found");
+		}
 		return m; 
 		
 	}
@@ -55,10 +61,12 @@ public class MemberService {
 	 * @return
 	 */
 	public Member updateMember(Member member, int id) {
+		if(id > lastId) {
+			throw new InvalidIdException("Member with ID "+ id +" does not exist. (ID too high)");
+		}
 		Member oldMember = getMember(id);
 		oldMember.setName(member.getName());
 		return oldMember;
-		// TODO Exception handling (if index is out of bounds)
 		//TODO Birth year update
 		
 	}
@@ -68,6 +76,9 @@ public class MemberService {
 	 * @param id
 	 */
 	public void removeMember(int id) {
+		if(id > lastId) {
+			throw new InvalidIdException("Member with ID "+ id +" does not exist. (ID too high)");
+		}
 		Member oldMember = getMember(id);
 		list.remove(oldMember);		
 		// TODO Return some info
@@ -105,6 +116,9 @@ public class MemberService {
 		return queryList;
 	}
 	
+	public static int getLastIndex() {
+		return lastId;
+	}
 	
 }
 
