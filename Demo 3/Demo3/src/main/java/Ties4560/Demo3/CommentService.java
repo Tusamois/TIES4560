@@ -21,7 +21,6 @@ public class CommentService {
 	}
 
 	public Comment getComment(int memberId, int commentId) {
-		//TODO Käyttääkö tämä memberID:tä muualla, kuin poikkeuksissa?
 		
 		if (commentId > lastId) {
 			throw new InvalidIdException("CommentID "+ commentId +" is not valid");

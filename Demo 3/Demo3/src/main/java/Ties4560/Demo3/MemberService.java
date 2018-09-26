@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import Ties4560.Demo3.exceptionHandling.DataNotFoundException;
 import Ties4560.Demo3.exceptionHandling.InvalidIdException;
 
-
 public class MemberService {
 	private static List<Member> list = new ArrayList<Member>(); 
 	private static int lastId = 0;
