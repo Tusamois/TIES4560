@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
@@ -26,6 +28,8 @@ import javax.ws.rs.core.UriInfo;
 @Path("/members")
 public class MemberResource {
 	MemberService memberService = new MemberService();
+	@Context
+	private SecurityContext securityContext;
 
 	
 //	@POST
@@ -40,6 +44,7 @@ public class MemberResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response addMember(Member member, @Context UriInfo uriInfo) {
 		Member newMemberService = memberService.addMember(member);
 		
@@ -60,6 +65,7 @@ public class MemberResource {
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response getMember(@PathParam("memberId") int memberId) {
 		Member newMemberService = MemberService.getMember(memberId);
 		return Response.status(Status.FOUND)
@@ -71,6 +77,7 @@ public class MemberResource {
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
 	public Response updateMember(@PathParam("memberId") int memberId, Member member) {
 		// member.getId(id);
 		Member newMemberService = memberService.updateMember(member, memberId);
@@ -82,6 +89,7 @@ public class MemberResource {
 
 	@DELETE
 	@Path("/{memberId}")
+	@RolesAllowed("admin")
 	public Response deleteMember(@PathParam("memberId") int memberId) {
 		memberService.removeMember(memberId);
 		return Response.status(Status.OK)
@@ -90,6 +98,7 @@ public class MemberResource {
 	}
 
 	@GET
+	@RolesAllowed("admin")
 	public Response getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
 			@QueryParam("end") int end) {
 		List<Member> newMemberService;
@@ -111,6 +120,7 @@ public class MemberResource {
 	}
 	
 	@Path("/{memberId}/comments")
+	@RolesAllowed("admin")
 	public CommentResource getCommentResource(@PathParam("memberId") int memberId){
 		return new CommentResource(memberId); 
 		

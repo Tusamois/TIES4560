@@ -4,8 +4,15 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class User implements Principal{
 	private String firstName, lastName, login, email, password;
+	private List<String> roles = new ArrayList<String>();
+	
+	public User() {
+	}
+		
 	
 	public String getName() {
 		return this.firstName + " " + this.lastName;
@@ -17,6 +24,7 @@ public class User implements Principal{
 
 	public void setLogin(String login) {
 		this.login = login;
+		this.roles.add("user"); //TODO tämä on testi
 	}
 
 	public String getEmail() {
@@ -42,25 +50,18 @@ public class User implements Principal{
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-
-	private List<String> roles;
 	
-	public User(String firstName, String lastName, String login, String email, String password) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.login = login;
-		this.email = email;
-		this.password = password;
-		this.roles = new ArrayList<String>();
-	}
 
 	public boolean isMe(String userName, String pw) {
 		return (this.login.equals(userName) && this.password.equals(pw));
 	}
 
 	public boolean containsMyRole(String[] r) {
+		System.out.println("Täällä");
 		for(String myR : this.roles) {
+			System.out.println("My role:"+myR);
 			for(String compR : r) {
+				System.out.println("Compare role:"+compR);
 				if (myR.equals(compR)) return true;
 			}
 		}

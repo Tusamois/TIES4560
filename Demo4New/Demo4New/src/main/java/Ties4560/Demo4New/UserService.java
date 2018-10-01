@@ -1,12 +1,11 @@
 package Ties4560.Demo4New;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 public class UserService {
-	private static List<User> list = new ArrayList<User>(); 
+	private static List<User> list = new ArrayList<User>();
 	private static int lastId = 0;
 	
 	public UserService() {};
@@ -25,10 +24,10 @@ public class UserService {
 	 * @param id
 	 * @return
 	 */
-	public static User getUser(String name) {
+	public static User getUser(String login) {
 		User m = null;
 		for (User user : list) {
-			if(user.getName().equals(name)) {m=user; break;}
+			if(user.getLogin().equals(login)) {m=user; break;}
 		}
 		return m; 
 		
@@ -72,9 +71,9 @@ public class UserService {
 	}
 
 
-	public static boolean userCredentialExists(String userName, String password) {
+	public static boolean userCredentialExists(String login, String password) {
 		for(User u : list) {
-			if(u.isMe(userName, password)) return true;
+			if(u.isMe(login, password)) return true;
 		}
 		return false;
 	}

@@ -1,5 +1,6 @@
 package Ties4560.Demo4New;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -32,7 +33,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		UserService US = new UserService();
-		User user = null;
+		User user = null;//new User("erkki", "Esimerkki", "user", "joku", "password");//TODO testi tämäkin
 		List<String> authHeader = requestContext.getHeaders().get(AUTH_HEADER_KEY);
 
 		if (authHeader != null && authHeader.size() > 0) {
@@ -52,6 +53,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 			Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(UNAUTHORIZED_ErrMESSAGE).build();
 			requestContext.abortWith(unauthorizedStatus);
 		}
+		
 		Method resMethod = resourceInfo.getResourceMethod();
 		Class<?> resClass = resourceInfo.getResourceClass();
 		
