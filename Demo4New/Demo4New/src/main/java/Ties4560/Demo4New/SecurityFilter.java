@@ -81,6 +81,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 	}
 	private boolean rolesMatched(User user, RolesAllowed annotation) {
 		String[] roles = annotation.value();
+		if(user == null) return false;
 		return user.containsMyRole(roles);
 	}
 
