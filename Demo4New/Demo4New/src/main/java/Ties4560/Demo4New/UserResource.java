@@ -99,20 +99,9 @@ public class UserResource {
 	// Guest, User ja  Admin
 	@GET
 	//@RolesAllowed("admin")
-	public Response getUsers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
-			@QueryParam("end") int end) {
-		List<User> newUserService;
-		
-		if (birthyear > 0) {
-			newUserService = userService.getAllUsersForYear(birthyear);
-		}
-		if (start >= 0 && end > 0) {
-			newUserService = userService.getAllUsersPaginated(start, end);
-		}
-		else {
-			newUserService =  userService.getAllUsers();
-		}
-		
+	public Response getUsers() {
+		List<User> newUserService =  userService.getAllUsers();
+				
 		return Response.status(Status.OK)
 		.header("User:", "admin")
 		.entity(newUserService)

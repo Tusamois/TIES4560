@@ -32,21 +32,11 @@ public class MemberResource {
 	private SecurityContext securityContext;
 
 	
-//	@POST
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public Response addMember(Member member) {
-//		Member newMemberService = memberService.addMember(member);
-//		return Response.status(Status.CREATED)
-//		.header("User:", "admin")
-//		.entity(newMemberService)
-//		.build(); 
-//	}
-	
 	
 	// User ja Admin
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	//@RolesAllowed("admin")
+	@RolesAllowed({"admin", "user"})
 	public Response addMember(Member member, @Context UriInfo uriInfo) {
 		Member newMemberService = memberService.addMember(member);
 		
@@ -68,7 +58,7 @@ public class MemberResource {
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@RolesAllowed("admin")
+	@RolesAllowed({"admin", "user", "guest"})
 	public Response getMember(@PathParam("memberId") int memberId) {
 		Member newMemberService = MemberService.getMember(memberId);
 		return Response.status(Status.FOUND)
@@ -81,7 +71,7 @@ public class MemberResource {
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@RolesAllowed("admin")
+	@RolesAllowed({"admin", "user"})
 	public Response updateMember(@PathParam("memberId") int memberId, Member member) {
 		// member.getId(id);
 		Member newMemberService = memberService.updateMember(member, memberId);
@@ -104,7 +94,7 @@ public class MemberResource {
 
 	// Guest, User ja  Admin
 	@GET
-	//@RolesAllowed("admin")
+	@RolesAllowed({"admin", "user"})
 	public Response getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
 			@QueryParam("end") int end) {
 		List<Member> newMemberService;
@@ -127,7 +117,7 @@ public class MemberResource {
 	
 	// User ja Admin
 	@Path("/{memberId}/comments")
-	@RolesAllowed("admin")
+	@RolesAllowed({"admin", "user"})
 	public CommentResource getCommentResource(@PathParam("memberId") int memberId){
 		return new CommentResource(memberId); 
 		

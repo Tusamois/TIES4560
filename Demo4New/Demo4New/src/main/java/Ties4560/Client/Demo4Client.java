@@ -60,85 +60,19 @@ public class Demo4Client {
 	 * @param login Username
 	 * @param password password
 	 * @param role role
-	 * @return 
 	 */
-	public String registerUser(String login, String password, String role) {
-		/*Client client = ClientBuilder.newClient();
-		WebTarget baseTarget = client.target("http://localhost:8080/Demo4New/webapi/users");
-		//WebTarget usersTarget = baseTarget.path("users");
-		//WebTarget memberTarget = membersTarget.path("{memberId}");
-		List<String> roles  = new ArrayList<String>();
-		roles.add(role);
-		User newUser = new User("ss","ss",login,"e",password,roles);
-		/*newUser.setLogin(login);
-		newUser.setPassword(password);
-		newUser.setRoles(roles);
-		newUser.setFirstName("asd");
-		newUser.setLastName("asdasd");
-		newUser.setEmail("asdasdasd");
-		System.out.println(Entity.json(newUser));
-		Entity<User> entity = Entity.json(newUser);
-		Response postResponse = baseTarget.request().post(entity);
-		System.out.println(postResponse.toString());
-		if (postResponse.getStatus() != 201) {
-			System.out.println("Error: User is not created. " + postResponse.getStatus());
-		} else {
-			System.out.println("User is created. " + postResponse.getStatus());
-		}*/
-		
-		/*System.out.println(login + password + role);
+	public void registerUser(String login, String password, String role) {
 		Client client = ClientBuilder.newClient();
-		String user = "user";
-		System.out.println(Entity.json(user));
-		Response response = client.target("http://localhost:8080/Demo4New/webapi/users/")
-		.request(MediaType.APPLICATION_JSON)
-		.post(Entity.json(user));
-		System.out.println(response.readEntity(String.class));*/ 
-		
-		
-		/*Client client = ClientBuilder.newClient();
 		WebTarget baseTarget = client.target("http://localhost:8080/Demo4New/webapi/");
-		WebTarget membersTarget = baseTarget.path("members");
-		Member newmember = new Member("Matti", 1993,1993);
-		System.out.println(Entity.json(newmember));
-		Response postResponse = membersTarget.request().post(Entity.json(newmember));
-		System.out.println(postResponse.toString());*/
-		String queryResult = null;
-		String user = "{ \"login\": \"" + login + "\", \"password\":\""+password + "\" } ";
-		URL url = null;
-		try {
-			url = new URL("http://localhost:8080/Demo4New/webapi/users");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		HttpURLConnection connection = null;
-		try {
-			connection = (HttpURLConnection) url.openConnection();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("Content-Length", "" + user.length());
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-			outputStreamWriter.write(user);
-			outputStreamWriter.flush();
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-			queryResult = response.toString();
-		} finally {
-			connection.disconnect();
-			return queryResult;
-		}
+		WebTarget usersTarget = baseTarget.path("users");
+		User newUser = new User();
+		newUser.setName(login);
+		newUser.setPassword(password);
+		newUser.setRole(role);
+		System.out.println(Entity.json(newUser));
+		Response postResponse = usersTarget.request().post(Entity.json(newUser));
+		System.out.println(postResponse.toString());
+
 
 		
 	

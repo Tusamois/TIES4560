@@ -101,44 +101,25 @@ public class UserService {
 		
 	}
 
-	/**
-	 * Returns all users for given year
-	 * @param birthyear
-	 * @return
-	 */
-	public List<User> getAllUsersForYear(int birthyear) {
-		List<User> queryList = new ArrayList<User>(); 
-		for (User user : list) {
-			if(user.getBirthyear() == birthyear) {
-				queryList.add(user);
-			}
-		}
-		return queryList;
-	}
-
-	/**
-	 * Returns all users for given timeperiod
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	public List<User> getAllUsersPaginated(int start, int end) {
-		List<User> queryList = new ArrayList<User>(); 
-		for (User user : list) {
-			if(user.getBirthyear() >= start && user.getBirthyear() <= end) {
-				queryList.add(user);
-			}
-		}
-		return queryList;
-	}
+	
+	
 	
 	public static int getLastIndex() {
 		return lastId;
 	}
 
-
+	/**
+	 * Checks if username and password are correct
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
 	public static boolean userCredentialExists(String userName, String password) {
-		// TODO Auto-generated method stub
+		for (User user : list) {
+			if(user.getName().equals(userName)) {
+				if(user.getPassword().equals(password)) {return true;}
+			}
+		}
 		return false;
 	}
 	
