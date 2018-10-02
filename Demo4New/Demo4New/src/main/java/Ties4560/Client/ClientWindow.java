@@ -79,7 +79,8 @@ public class ClientWindow extends JFrame {
 				String login = textFieldUser.getText();
 				String password = textFieldPassword.getText();
 				String role = comboBox.getSelectedItem().toString();
-				client.registerUser(login, password, role);
+				String vastaus = client.registerUser(login, password, role);
+				System.out.println(vastaus);
 			}
 		});
 		contentPane.add(btnRegister);

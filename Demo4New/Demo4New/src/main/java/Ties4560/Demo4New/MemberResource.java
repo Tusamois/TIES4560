@@ -46,7 +46,7 @@ public class MemberResource {
 	// User ja Admin
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@RolesAllowed("admin")
+	//@RolesAllowed("admin")
 	public Response addMember(Member member, @Context UriInfo uriInfo) {
 		Member newMemberService = memberService.addMember(member);
 		
@@ -104,7 +104,7 @@ public class MemberResource {
 
 	// Guest, User ja  Admin
 	@GET
-	@RolesAllowed("admin")
+	//@RolesAllowed("admin")
 	public Response getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
 			@QueryParam("end") int end) {
 		List<Member> newMemberService;

@@ -1,3 +1,4 @@
+
 package Ties4560.Demo4New;
 
 import java.security.Principal;
@@ -7,97 +8,72 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User implements Principal{
-	private String firstName, lastName, login, email, password;
-	private List<String> roles = new ArrayList<String>();
+	private String name;
+	private int user_id;
+	private int birthyear;
+	private List<Link> links = new ArrayList<>();
+	
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	public User(String name, int id, int birthyear) {
+		this.name = name;
+		this.user_id = id;
+		this.setBirthyear(birthyear);
+	}
+	
+	public User(String name, int id) {
+		this.name = name;
+		this.user_id = id;
+		this.setBirthyear(1);
+	}
 	
 	public User() {
 	}
 		
-	public User(String firstName, String lastName, String login, String email, String password) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.login = login;
-		this.email = email;
-		this.password = password;
-		//this.roles = roles;
-	}
-	
-	public User(String login2, String password2) {
-		this.login = login2;
-		this.password = password2;
-		
-	}
-
 	public String getName() {
-		return this.firstName + " " + this.lastName;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-		//this.roles.add("admin"); //TODO tämä on testi
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<String> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
+		return name;
 	}
 	
-
-	public boolean isMe(String userName, String pw) {
-		return (this.login.equals(userName) && this.password.equals(pw));
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String toString() {
+		return name;
+	}
+	
+	public int getId() {
+		return user_id;
+	}
+	
+	public void setId(int id) {
+		this.user_id = id;
 	}
 
-	public boolean containsMyRole(String[] r) {
-		System.out.println("Täällä");
-		for(String myR : this.roles) {
-			System.out.println("My role:"+myR);
-			for(String compR : r) {
-				System.out.println("Compare role:"+compR);
-				if (myR.equals(compR)) return true;
-			}
-		}
+	public int getBirthyear() {
+		return birthyear;
+	}
+
+	public void setBirthyear(int birthyear) {
+		this.birthyear = birthyear;
+	}
+	
+	public void addLink(String url, String rel) {
+		Link newLink = new Link();
+		newLink.setLink(url);
+		newLink.setRel(rel);
+		links.add(newLink);
+	}
+
+	public Object getRoles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean containsMyRole(String[] roles) {
+		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-		
-	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-		
-	}
-	
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public String getFirstName() {
-		return firstName;
-	}
-
 }

@@ -19,7 +19,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Response.Status;
-
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -28,7 +27,9 @@ import javax.ws.rs.core.UriInfo;
 
 @Path("/users")
 public class UserResource {
-	private UserService userService = new UserService();
+	UserService userService = new UserService();
+	@Context
+	private SecurityContext securityContext;
 
 	
 //	@POST
@@ -41,30 +42,83 @@ public class UserResource {
 //		.build(); 
 //	}
 	
+	
+	// User ja Admin
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	//@RolesAllowed("admin")
 	public Response addUser(User user, @Context UriInfo uriInfo) {
 		User newUserService = userService.addUser(user);
-		URI uriA = uriInfo.getAbsolutePathBuilder().build();
+		
+		String newId = String.valueOf(newUserService.getId());
+		URI uriA = uriInfo.getAbsolutePathBuilder().path(newId).build();
 		return Response.created(uriA)
 		.header("User:", "admin")
 		.entity(newUserService)
 		.build(); 
 	}
 
-	
-
+	// Guest, User ja  Admin
 	@GET
+	@Path("/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers() {
-		List<User> newUserService;
-		newUserService =  userService.getAllUsers();
-	
+	@RolesAllowed("admin")
+	public Response getUser(@PathParam("userId") int userId) {
+		User newUserService = UserService.getUser(userId);
+		return Response.status(Status.FOUND)
+		.header("User:", "admin")
+		.entity(newUserService)
+		.build();
+	}
+
+	//User ja Admin
+	@PUT
+	@Path("/{userId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed("admin")
+	public Response updateUser(@PathParam("userId") int userId, User user) {
+		// user.getId(id);
+		User newUserService = userService.updateUser(user, userId);
 		return Response.status(Status.OK)
 		.header("User:", "admin")
 		.entity(newUserService)
 		.build(); 
 	}
+
+	// Admin
+	@DELETE
+	@Path("/{userId}")
+	@RolesAllowed("admin")
+	public Response deleteUser(@PathParam("userId") int userId) {
+		userService.removeUser(userId);
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.build(); 
+	}
+
+	// Guest, User ja  Admin
+	@GET
+	//@RolesAllowed("admin")
+	public Response getUsers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
+			@QueryParam("end") int end) {
+		List<User> newUserService;
 		
+		if (birthyear > 0) {
+			newUserService = userService.getAllUsersForYear(birthyear);
+		}
+		if (start >= 0 && end > 0) {
+			newUserService = userService.getAllUsersPaginated(start, end);
+		}
+		else {
+			newUserService =  userService.getAllUsers();
+		}
 		
+		return Response.status(Status.OK)
+		.header("User:", "admin")
+		.entity(newUserService)
+		.build(); 
+	}
+	
 }
+
+
