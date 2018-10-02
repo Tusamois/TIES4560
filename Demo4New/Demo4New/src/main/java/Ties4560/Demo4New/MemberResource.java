@@ -42,6 +42,8 @@ public class MemberResource {
 //		.build(); 
 //	}
 	
+	
+	// User ja Admin
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed("admin")
@@ -62,6 +64,7 @@ public class MemberResource {
 		.build(); 
 	}
 
+	// Guest, User ja  Admin
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +77,7 @@ public class MemberResource {
 		.build();
 	}
 
+	//User ja Admin
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -87,6 +91,7 @@ public class MemberResource {
 		.build(); 
 	}
 
+	// Admin
 	@DELETE
 	@Path("/{memberId}")
 	@RolesAllowed("admin")
@@ -97,6 +102,7 @@ public class MemberResource {
 		.build(); 
 	}
 
+	// Guest, User ja  Admin
 	@GET
 	@RolesAllowed("admin")
 	public Response getMembers(@QueryParam("birthyear") int birthyear, @QueryParam("start") int start,
@@ -119,6 +125,7 @@ public class MemberResource {
 		.build(); 
 	}
 	
+	// User ja Admin
 	@Path("/{memberId}/comments")
 	@RolesAllowed("admin")
 	public CommentResource getCommentResource(@PathParam("memberId") int memberId){

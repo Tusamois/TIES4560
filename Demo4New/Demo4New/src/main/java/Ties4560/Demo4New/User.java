@@ -13,7 +13,21 @@ public class User implements Principal{
 	public User() {
 	}
 		
+	public User(String firstName, String lastName, String login, String email, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.login = login;
+		this.email = email;
+		this.password = password;
+		//this.roles = roles;
+	}
 	
+	public User(String login2, String password2) {
+		this.login = login2;
+		this.password = password2;
+		
+	}
+
 	public String getName() {
 		return this.firstName + " " + this.lastName;
 	}
@@ -24,7 +38,7 @@ public class User implements Principal{
 
 	public void setLogin(String login) {
 		this.login = login;
-		this.roles.add("user"); //TODO tämä on testi
+		//this.roles.add("admin"); //TODO tämä on testi
 	}
 
 	public String getEmail() {
@@ -66,6 +80,24 @@ public class User implements Principal{
 			}
 		}
 		return false;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+		
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+		
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public String getFirstName() {
+		return firstName;
 	}
 
 }
