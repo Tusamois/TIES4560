@@ -35,8 +35,19 @@ public class SecurityFilter implements ContainerRequestFilter {
 		UserService US = new UserService();
 		User user = null;//new User("erkki", "Esimerkki", "user", "joku", "password");//TODO testi tämäkin
 		List<String> authHeader = requestContext.getHeaders().get(AUTH_HEADER_KEY);
-
-		if (authHeader != null && authHeader.size() > 0) {
+		
+		//Authentication type:
+		String atype; 
+		try {
+			atype = authHeader.get(0).substring(0, 5);
+		}catch(Exception e) {
+			atype = "nothing";
+		}
+		
+		
+		//BASIC AUTH:
+		if (authHeader != null && authHeader.size() > 0 && atype.equals("Basic")) {
+			System.out.println("Basic");
 			String authToken = authHeader.get(0).replaceFirst(AUTH_HEADER_PREFIX, "");
 			String decodedS = Base64.decodeAsString(authToken);
 			StringTokenizer tokenizer = new StringTokenizer(decodedS, ":");
@@ -48,6 +59,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 				requestContext.setSecurityContext(new CustomSecurityContext(user, scheme));
 			}
 		}
+		
 		if ((requestContext.getUriInfo().getPath().contains(SECURED_URL_PREFIX)) || (requestContext.getMethod().equals("DELETE"))){
 			if(user != null) return;
 			Response unauthorizedStatus = Response.status(Response.Status.UNAUTHORIZED).entity(UNAUTHORIZED_ErrMESSAGE).build();
